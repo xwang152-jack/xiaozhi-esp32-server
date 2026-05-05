@@ -2,8 +2,15 @@ name: Docker Image CI
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - 'v*.*.*'  # 只在以 v 开头的标签推送时触发，例如 v1.0.0
+      - 'v*.*.*'
+    paths:
+      - 'main/**'
+      - 'Dockerfile-server'
+      - 'Dockerfile-web'
+      - 'docs/docker/**'
   workflow_dispatch:
   workflow_run:
     workflows: ["Build Base Image"]
@@ -70,9 +77,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
+            BASE_IMAGE=ghcr.io/${{ github.repository }}:server-base
             BUILDKIT_PROGRESS=plain
 
-      # 构建 manager-api 镜像
+      # 构建 manager-web 镜像
       - name: Build and push manager-web
         uses: docker/build-push-action@v6
         with:
