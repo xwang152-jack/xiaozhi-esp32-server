@@ -8,6 +8,7 @@ on:
       - 'main/xiaozhi-server/requirements.txt'
       - 'Dockerfile-server-base'
       - '.github/workflows/build-base-image.yml'
+  workflow_dispatch:
 
 jobs:
   build-base:
